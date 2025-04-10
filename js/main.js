@@ -10,6 +10,7 @@ const cuerpoTabla = tablaListaCompras.getElementsByTagName("tbody").item(0);
 const contadorProductos = document.getElementById("contadorProductos");
 const productosTotal = document.getElementById("productosTotal");
 const precioTotal = document.getElementById("precioTotal");
+const btnClear = document.getElementById("btnClear");
 
 // Numeracion de la primera columna de la tabla
 let cont = 0;
@@ -137,3 +138,10 @@ window.addEventListener("load", (e) => {
   productosTotal.innerText = totalEnProductos;
   contadorProductos.innerText = cont;
 }); // window.addEventListener para cuando cargue la pagina
+
+btnClear.addEventListener("click", (e) => {
+  e.preventDefault();
+  localStorage.removeItem("resumen");
+  localStorage.removeItem("datos");
+  window.location.reload();
+}); // Limpiar todo, en interfaz grafica y localStorage
