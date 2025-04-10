@@ -15,6 +15,7 @@ const precioTotal = document.getElementById("precioTotal");
 let cont = 0;
 let constoTotal = 0;
 let totalEnProductos = 0;
+let datos = []; // almacena los alementos de la tabla
 
 const validarCantidad = () => {
   if (txtNumber.value.trim().length <= 0) {
@@ -79,6 +80,16 @@ btnAgregar.addEventListener("click", (event) => {
         <td>${txtNumber.value}</td>
         <td>${precio}</td>
     </tr>`;
+
+    let elemento = {
+      cont: cont,
+      nombre: txtName.value,
+      cantidad: txtNumber.value,
+      precio: precio,
+    };
+    datos.push(elemento);
+    localStorage.setItem("datos", JSON.stringify(datos));
+
     cuerpoTabla.insertAdjacentHTML("beforeend", row);
     constoTotal += precio * Number(txtNumber.value);
     precioTotal.innerText = "$" + constoTotal.toFixed(2);
@@ -86,8 +97,43 @@ btnAgregar.addEventListener("click", (event) => {
     productosTotal.innerText = totalEnProductos;
     contadorProductos.innerText = cont;
 
+    let resumen = {
+      cont: cont,
+      totalEnProductos: totalEnProductos,
+      constoTotal: constoTotal,
+    };
+    localStorage.setItem("resumen", JSON.stringify(resumen));
+
     txtName.value = "";
     txtNumber.value = "";
     txtName.focus();
   } // if isValid
 });
+
+window.addEventListener("load", (e) => {
+  e.preventDefault();
+  if (localStorage.getItem("datos") != null) {
+    datos = JSON.parse(localStorage.getItem("datos"));
+  } // datos != null
+
+  datos.forEach((dato) => {
+    let row = `
+    <tr>
+        <td>${dato.cont}</td>
+        <td>${dato.nombre}</td>
+        <td>${dato.cantidad}</td>
+        <td>${dato.precio}</td>
+    </tr>`;
+    cuerpoTabla.insertAdjacentHTML("beforeend", row);
+  });
+
+  if (localStorage.getItem("resumen") != null) {
+    resumen = JSON.parse(localStorage.getItem("resumen"));
+    constoTotal = resumen.constoTotal;
+    totalEnProductos = resumen.totalEnProductos;
+    cont = resumen.cont;
+  } // resumen != null
+  precioTotal.innerText = "$" + constoTotal.toFixed(2);
+  productosTotal.innerText = totalEnProductos;
+  contadorProductos.innerText = cont;
+}); // window.addEventListener para cuando cargue la pagina
