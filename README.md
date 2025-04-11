@@ -9,7 +9,7 @@
 
 ---
 
-##### 🚀 Accede al deploy directamente
+### 🚀 Accede al deploy directamente
 
 👉 [Ver proyecto en vivo](https://ricardomiguelr.github.io/CH53_ListaCompras/)
 
